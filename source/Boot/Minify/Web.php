@@ -4,7 +4,7 @@ if (strpos(url(), "localhost")) {
      * CSS
      */
     $minCSS = new MatthiasMullie\Minify\CSS();
-    $minCSS->add(__DIR__ . "/../../../shared/styles/fonts/font-awesome.css");
+    $minCSS->add(__DIR__ . "/../../../shared/styles/style.css");
     $minCSS->add(__DIR__ . "/../../../shared/styles/bootstrap.css");
     $minCSS->add(__DIR__ . "/../../../shared/styles/daterangepicker.css");
     $minCSS->add(__DIR__ . "/../../../shared/styles/selectpicker.css");

@@ -32,9 +32,15 @@ define('CONF_SITE_ADDR_ZIPCODE', '');
 /**
  * SOCIAL
  */
+define('CONF_SOCIAL_TWITTER_CREATOR', '@passow-imoveis');
+define('CONF_SOCIAL_TWITTER_PUBLISHER', '@passow-imoveis');
+define('CONF_SOCIAL_FACEBOOK_APP', '000000000000000');
+define('CONF_SOCIAL_FACEBOOK_AUTHOR', 'passow-imoveis');
 define("CONF_SOCIAL_FACEBOOK_PAGE", "passow-imoveis");
 define("CONF_SOCIAL_INSTAGRAM_PAGE", "passow-imoveis");
 define("CONF_SOCIAL_YOUTUBE_PAGE", "passow-imoveis");
+define('CONF_SOCIAL_GOOGLE_PAGE', '');
+define('CONF_SOCIAL_GOOGLE_AUTHOR', '');
 
 /**
  * DATES
@@ -87,3 +93,8 @@ define("CONF_MAIL_OPTION_HTML", true);
 define("CONF_MAIL_OPTION_AUTH", true);
 define("CONF_MAIL_OPTION_SECURE", "tls");
 define("CONF_MAIL_OPTION_CHARSET", "utf-8");
+
+//VISTA API
+define("CONF_VISTA_API_URL", "http://sandbox-rest.vistahost.com.br/");
+define("CONF_VISTA_API_KEY", "c9fdd79584fb8d369a6a579af1a8f681");
+define("CONF_VISTA_BACK", CONF_URL_BASE . "/vista/callback");

@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: "passow";
+    src:url("fonts/passow.eot");
+    src:url("fonts/passow.eot?#iefix") format("embedded-opentype"),
+    url("fonts/passow.woff") format("woff"),
+    url("fonts/passow.ttf") format("truetype"),
+    url("fonts/passow.svg#fsphp") format("svg");
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+[data-icon]:before {
+    font-family: "passow" !important;
+    content: attr(data-icon);
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    z-index: 2;
+    position: relative;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-family: "passow" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    z-index: 2;
+    position: relative;
+}
+
+.icon-whatsapp:before {
+    content: "\e90a";
+}
+.icon-facebook:before {
+    content: "\e902";
+}
+.icon-youtube:before {
+    content: "\e90b";
+}
+.icon-instagram:before {
+    content: "\e904";
+}
+.icon-menu:before {
+    content: "\e906";
+}
+.icon-file:before {
+    content: "\e903";
+}
+.icon-phone:before {
+    content: "\e907";
+}
+.icon-bed:before {
+    content: "\e900";
+}
+.icon-car:before {
+    content: "\e901";
+}
+.icon-pin:before {
+    content: "\e905";
+}
+.icon-size:before {
+    content: "\e909";
+}
+.icon-shower:before {
+    content: "\e908";
+}
