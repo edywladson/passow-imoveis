@@ -5,6 +5,7 @@ namespace Source\App;
 
 
 use Source\Core\Controller;
+use Source\Models\Admin\Contract;
 use Source\Models\Admin\Proprietary;
 use Source\Models\Admin\Tenant;
 use Source\Models\Auth;
@@ -296,6 +297,78 @@ class Admin extends Controller
      */
     public function contracts(): void
     {
+        $contracts = (new Contract())->find();
+        $pager = new Pager(url("/admin/contratos/"));
+        $pager->pager($contracts->count(), 20, (!empty($data["page"]) ? $data["page"] : 1));
+
+        $proprietaties = (new Proprietary())->find();
+        $ternants = (new Tenant())->find();
+
+
+        $head = $this->seo->render(
+            "Contratos" . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.jpg"),
+            false
+        );
+
+        echo $this->view->render("contracts", [
+            "app" => "contracts",
+            "head" => $head,
+            "contracts" => $contracts->order("id ASC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+            "proprietaties" => $proprietaties->fetch(true),
+            "tenants" => $ternants->fetch(true),
+            "paginator" => $pager->render()
+        ]);
+    }
+
+    public function contract(?array $data): void
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        if (!empty($data["action"]) && $data["action"] == "find_immobile") {
+            $immobile = (new Vista())->findImmobile($data["query"])->callback();
+            var_dump($immobile);
+        }
+
+        /** create */
+        if (!empty($data["action"]) && $data["action"] == "create") {
+            $immobile = (new Vista())->findImmobile($data["immobile"])->callback();
+
+            if(isset($immobile->status) && $immobile->status == 400){
+                $json["message"] = $this->message->warning($immobile->message)->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $contract = new Contract();
+            $contract->immobile_code = $immobile->Codigo;
+            $contract->immobile_address = $immobile->Endereco;
+            $contract->proprietary_id = $data["property_id"];
+            $contract->tenant_id = $data["tenant_id"];
+            $contract->started = date('Y-m-d', strtotime($data["started"]));
+            $contract->closing = date('Y-m-d', strtotime($data["closing"]));
+            $contract->administration_fee = $data["administration_fee"];
+            $contract->rent_value = str_replace(['.', ','], ['', '.'], $data["rent_value"]);
+            $contract->condo_value = str_replace(['.', ','], ['', '.'], $data["condo_value"]);
+            $contract->iptu_value = str_replace(['.', ','], ['', '.'], $data["iptu_value"]);
+
+            if (!$contract->save()) {
+                $json['message'] = $contract->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Contrato cadastrado com sucesso!")->flash();
+            $json["reload"] = true;
+
+            echo json_encode($json);
+            return;
+        }
+
+
+
         $head = $this->seo->render(
             "Contratos" . CONF_SITE_NAME,
             CONF_SITE_DESC,

@@ -144,6 +144,28 @@ $(function () {
     });
 
     /*
+     * AJAX IMMOBILE
+     */
+    // $(".ajax_immobile").focusout(function () {
+    //
+    //     var form = $(".app_form");
+    //     var query = $(this).val();
+    //
+    //     if (query !== '') {
+    //         $.ajax({
+    //             url: form.attr("action"),
+    //             type: "POST",
+    //             data: {query: query, action: "find_immobile"},
+    //             success: function (response) {
+    //                 $(".results").fadeIn();
+    //                 $(".results").html(response);
+    //             }
+    //         });
+    //     }
+    //
+    // });
+
+    /*
      * IMAGE RENDER
      */
     $("[data-image]").change(function (e) {

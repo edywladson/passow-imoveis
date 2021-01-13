@@ -45,6 +45,7 @@ $route->get('/locadores', 'Admin:proprietaries');
 $route->get('/locador/{proprietary}', 'Admin:proprietary');
 $route->post('/locador', 'Admin:proprietary');
 $route->get('/contratos', 'Admin:contracts');
+$route->post('/contrato', 'Admin:contract');
 
 
 $route->get("/sair", "Admin:logout");

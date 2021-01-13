@@ -106,7 +106,7 @@ class Vista
         return $this;
     }
 
-    public function findProperty(string $code): ?Vista
+    public function findImmobile(string $code): ?Vista
     {
         $this->endpoint = "/imoveis/detalhes?key={$this->apiKey}&imovel={$code}";
         $this->build = [
@@ -125,6 +125,9 @@ class Vista
                 "BanheiroSocialQtd",
                 "AreaTotal",
                 "AreaPrivativa",
+                "ValorIptu",
+                "ValorCondominio",
+                "ValorLocacao",
                 "Caracteristicas",
                 "InfraEstrutura",
                 ['Foto' => [
