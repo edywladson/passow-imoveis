@@ -14,7 +14,6 @@
 </head>
 <body>
 
-
 <div class="ajax_load">
     <div class="ajax_load_box">
         <div class="ajax_load_box_circle"></div>
@@ -27,12 +26,22 @@
     <div class="container">
         <div class="row">
             <div class="col-md-2 header_logo">
-                <img src="<?= theme("/assets/images/logo.png"); ?>" alt="Passow Imóveis" class="logo">
+                <a href="<?= url("/"); ?>">
+                    <img src="<?= theme("/assets/images/logo.png"); ?>" alt="Passow Imóveis" class="logo">
+                </a>
             </div>
             <div class="col-md-10 d-flex align-items-center justify-content-end header_menus_contacts">
                 <div class="header_menus">
-                    <a href="" class="menu"><i class="icon-menu"></i> Menu</a>
-                    <a href="" class="menu"><i class="icon-file"></i> 2ª Via Boleto</a>
+
+                    <button class="btn btn-link dropdown-toggle menu" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-menu"></i> Menu
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="<?= url("/"); ?>">Página Inicial</a>
+                        <a class="dropdown-item" href="<?= url("/entrar"); ?>">Login</a>
+                    </div>
+
+                    <a href="" class="menu btn btn-link"><i class="icon-file"></i> 2ª Via Boleto</a>
                 </div>
                 <div class="header_phones d-flex">
                     <div class="contact d-flex align-items-center">

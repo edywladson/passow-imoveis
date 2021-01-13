@@ -36,6 +36,14 @@ $route->get('/confirma', 'Web:confirm');
 $route->get('/obrigado/{email}', 'Web:success');
 
 // ADMIN ROUTES
+$route->group('/admin');
+$route->get('/', 'Admin:home');
+$route->get('/locatarios', 'Admin:tenants');
+$route->get('/locadores', 'Admin:proprietaries');
+$route->get('/contratos', 'Admin:contracts');
+
+
+$route->get("/sair", "Admin:logout");
 
 // ERROR ROUTES
 $route->group('/ops');

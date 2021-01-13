@@ -16,7 +16,7 @@ $(function () {
         if (goal == 'Venda') {
             $('.value_sale').show();
             $('.value_rent').hide();
-        }else{
+        } else {
             $('.value_sale').hide();
             $('.value_rent').show();
         }
