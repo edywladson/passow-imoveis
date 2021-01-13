@@ -5,11 +5,13 @@ namespace Source\App;
 
 
 use Source\Core\Controller;
+use Source\Models\Admin\Tenant;
 use Source\Models\Auth;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Support\Message;
+use Source\Support\Pager;
 use Source\Support\Vista;
 
 /**
@@ -59,7 +61,7 @@ class Admin extends Controller
         ]);
     }
 
-    public function tenants():void
+    public function tenants(): void
     {
         $head = $this->seo->render(
             "Locatários" . CONF_SITE_NAME,
@@ -69,10 +71,102 @@ class Admin extends Controller
             false
         );
 
+        $tenants = (new Tenant())->find();
+        $pager = new Pager(url("/admin/locatarios/"));
+        $pager->pager($tenants->count(), 20, (!empty($data["page"]) ? $data["page"] : 1));
+
 
         echo $this->view->render("tenants", [
             "app" => "tenants",
-            "head" => $head
+            "head" => $head,
+            "tenants" => $tenants->order("id ASC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+            "paginator" => $pager->render(),
+        ]);
+    }
+
+    public function tenant(?array $data): void
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        /** create */
+        if (!empty($data["action"]) && $data["action"] == "create") {
+            $tenant = new Tenant();
+            $tenant->name = $data["name"];
+            $tenant->email = $data["email"];
+            $tenant->phone = $data["phone"];
+
+            if (!$tenant->save()) {
+                $json['message'] = $tenant->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Locatário cadastrado com sucesso!")->flash();
+
+            echo json_encode(["redirect" => url("/admin/locatario/{$tenant->id}")]);
+            return;
+        }
+
+        /** update */
+        if (!empty($data["action"]) && $data["action"] == "update") {
+
+            $tenant = (new Tenant())->findById($data["id"]);
+            $tenant->name = $data["name"];
+            $tenant->email = $data["email"];
+            $tenant->phone = $data["phone"];
+
+            if (!$tenant->save()) {
+                $json['message'] = $tenant->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Locatário atualizado com sucesso!")->flash();
+
+            echo json_encode(['reload' => true]);
+            return;
+        }
+
+        /** delete */
+        if (!empty($data["action"]) && $data["action"] == "delete") {
+
+            $tenant = (new Tenant())->findById($data["id"]);
+
+            if (!$tenant) {
+                $this->message->error("Você tentou excluir um locatário que não existe ou já foi removido")->flash();
+                echo json_encode(["redirect" => url("/admin/locatarios")]);
+                return;
+            }
+
+            $tenant->destroy();
+
+            $this->message->success("Locatário excluído com sucesso!")->flash();
+            $json["redirect"] = url("/admin/locatarios");
+
+            echo json_encode($json);
+            return;
+        }
+
+        $head = $this->seo->render(
+            "Locatário" . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.jpg"),
+            false
+        );
+
+        $tenantId = filter_var($data["tenant"], FILTER_VALIDATE_INT);
+        $tenant = (new Tenant())->findById($tenantId);
+
+        if (!$tenant) {
+            $this->message->error('Ooops! Você tentou acessar um locatário que não existe')->flash();
+            redirect(url('/admin/locatarios'));
+        }
+
+        echo $this->view->render("tenant", [
+            "app" => "tenants",
+            "head" => $head,
+            "tenant" => $tenant->data()
         ]);
     }
 

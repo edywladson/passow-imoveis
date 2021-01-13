@@ -39,6 +39,8 @@ $route->get('/obrigado/{email}', 'Web:success');
 $route->group('/admin');
 $route->get('/', 'Admin:home');
 $route->get('/locatarios', 'Admin:tenants');
+$route->get('/locatario/{tenant}', 'Admin:tenant');
+$route->post('/locatario', 'Admin:tenant');
 $route->get('/locadores', 'Admin:proprietaries');
 $route->get('/contratos', 'Admin:contracts');
 
