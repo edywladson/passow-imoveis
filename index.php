@@ -16,6 +16,8 @@ $route->namespace('Source\\App');
 // WEB ROUTES
 $route->group(null);
 $route->get('/', 'Web:home');
+$route->post('/buscar', 'Web:search');
+$route->get('/buscar/{object}/{type}/{neighborhoods}/{dorms}/{value}/{code}', 'Web:search');
 
 //auth
 $route->group(null);

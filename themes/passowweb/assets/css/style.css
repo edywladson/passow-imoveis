@@ -126,6 +126,14 @@ header .header_phones span {
     text-align: center;
 }
 
+.search .search-btn .btn-primary{
+    background: #191918;
+}
+
+.search .search-btn .btn-primary.active{
+    background: #F57B3D;
+}
+
 .search .search-form .btn {
     width: 100%;
 }

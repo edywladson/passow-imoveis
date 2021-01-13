@@ -12,6 +12,7 @@ use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Support\Email;
 use Source\Support\Pager;
+use Source\Support\Vista;
 
 /**
  * Web Controller
@@ -35,6 +36,8 @@ class Web extends Controller
      */
     public function home(): void
     {
+        $properties = (new Vista())->all()->callback();
+
         $head = $this->seo->render(
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
             CONF_SITE_DESC,
@@ -44,6 +47,52 @@ class Web extends Controller
 
         echo $this->view->render("home", [
             "head" => $head,
+            "properties" => $properties
+        ]);
+    }
+
+    /**
+     * @param array|null $data
+     */
+    public function search(?array $data): void
+    {
+        if(!empty($data['goal'])){
+            $goal = filter_var($data['goal'], FILTER_SANITIZE_STRIPPED);
+            $type = ($data['property_type']) ? filter_var($data['property_type'], FILTER_SANITIZE_STRIPPED) : 'all';
+            $neighborhoods = ($data['neighborhoods']) ? filter_var($data['neighborhoods'], FILTER_SANITIZE_STRIPPED) : 'all';
+            $dorms = ($data['dorms']) ? filter_var($data['dorms'], FILTER_SANITIZE_STRIPPED) : 'all';
+            $value_sale = ($data['value_rent']) ? filter_var($data['value_sale'], FILTER_SANITIZE_STRIPPED) : 'all';
+            $value_rent = ($data['value_rent']) ? filter_var($data['value_rent'], FILTER_SANITIZE_STRIPPED) : 'all';
+            $value = ($data["goal"] == 'Venda' ? $value_sale : $value_rent);
+            $code = ($data['code']) ? filter_var($data['code'], FILTER_SANITIZE_STRIPPED) : 'all';
+
+            echo json_encode(['redirect' => url("/buscar/{$goal}/{$type}/{$neighborhoods}/{$dorms}/{$value}/{$code}")]);
+            return;
+        }
+
+        $search = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        $head = $this->seo->render(
+            "Pesquisa - " . CONF_SITE_NAME,
+            "Confira os resultados de sua pesquisa",
+            url("/buscar/"),
+            theme("/assets/images/share.jpg")
+        );
+
+        $filter = [
+            "Codigo" => ($search['code'] != 'all') ? $search['code'] : '',
+            "Categoria" => ($search['type'] != 'all') ? $search['type'] : '',
+            "Dormitorios" => ($search['dorms'] != 'all') ? ($search['dorms'] == 5 ? ['>=', 5] : $search['dorms']) : '',
+            "Bairro" => ($search['neighborhoods'] != 'all') ? $search['neighborhoods'] : '',
+            "ValorVenda" => ($search['value'] != 'all') ? $search['value'] : '',
+            "ValorLocacao" => ($search['value'] != 'all') ? $search['value'] : '',
+        ];
+        $filter = array_filter($filter);
+        $properties = (new Vista())->find($filter)->callback();
+
+        echo $this->view->render("home", [
+            "head" => $head,
+            "properties" => $properties
         ]);
     }
 

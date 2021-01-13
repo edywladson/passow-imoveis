@@ -9,6 +9,23 @@ $(function () {
         $("html, body").animate({scrollTop: goto}, goto / 2);
     });
 
+    $(".btnGoal").click(function (e) {
+        e.preventDefault();
+        var goal = $(this).data("goal");
+
+        if (goal == 'Venda') {
+            $('.value_sale').show();
+            $('.value_rent').hide();
+        }else{
+            $('.value_sale').hide();
+            $('.value_rent').show();
+        }
+
+        $('.goal').val(goal);
+        $(".btnGoal").removeClass('active');
+        $(this).addClass('active');
+    });
+
     /*
      * AJAX FORM
      */
@@ -31,7 +48,7 @@ $(function () {
                 //redirect
                 if (response.redirect) {
                     window.location.href = response.redirect;
-                }else{
+                } else {
                     load.fadeOut(200);
                 }
 

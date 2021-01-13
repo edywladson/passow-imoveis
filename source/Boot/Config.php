@@ -95,6 +95,6 @@ define("CONF_MAIL_OPTION_SECURE", "tls");
 define("CONF_MAIL_OPTION_CHARSET", "utf-8");
 
 //VISTA API
-define("CONF_VISTA_API_URL", "http://sandbox-rest.vistahost.com.br/");
+define("CONF_VISTA_API_URL", "http://sandbox-rest.vistahost.com.br");
 define("CONF_VISTA_API_KEY", "c9fdd79584fb8d369a6a579af1a8f681");
 define("CONF_VISTA_BACK", CONF_URL_BASE . "/vista/callback");
