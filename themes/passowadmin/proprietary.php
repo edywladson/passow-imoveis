@@ -4,11 +4,11 @@
     <header class="title_content">
         <div class="row d-flex align-items-center">
             <div class="col">
-                <h6>Locatário</h6>
-                <h2><?= $tenant->name; ?></h2>
+                <h6>Locador</h6>
+                <h2><?= $proprietary->name; ?></h2>
             </div>
             <div class="col-auto">
-                <a href="<?= url("admin/locatarios"); ?>" class="btn btn-light btn_icons_space">< Voltar</a>
+                <a href="<?= url("admin/locadores"); ?>" class="btn btn-light btn_icons_space">< Voltar</a>
             </div>
         </div>
     </header>
@@ -17,30 +17,36 @@
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-body">
-                    <form class="app_form" action="<?= url("/admin/locatario"); ?>" method="post"
+                    <form class="app_form" action="<?= url("/admin/locador"); ?>" method="post"
                           enctype="multipart/form-data" autocomplete="off">
                         <?= csrf_input(); ?>
 
                         <!-- ACTION SPOOFING -->
                         <input type="hidden" name="action" value="update"/>
-                        <input type="hidden" name="id" value="<?= $tenant->id ?>"/>
+                        <input type="hidden" name="id" value="<?= $proprietary->id ?>"/>
 
                         <div class="form-group">
                             <label>Nome</label>
-                            <input type="text" class="form-control name" name="name" value="<?= $tenant->name ?>"
+                            <input type="text" class="form-control name" name="name" value="<?= $proprietary->name ?>"
                                    required>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group  col">
                                 <label>E-mail</label>
-                                <input type="email" class="form-control email" name="email" value="<?= $tenant->email ?>"
+                                <input type="email" class="form-control email" name="email"
+                                       value="<?= $proprietary->email ?>"
                                        required>
                             </div>
                             <div class="form-group col">
                                 <label>Telefone</label>
                                 <input type="text" class="form-control phone mask-phone" name="phone"
-                                       value="<?= $tenant->phone ?>" required>
+                                       value="<?= $proprietary->phone ?>" required>
+                            </div>
+                            <div class="form-group col">
+                                <label>Dia de repasse</label>
+                                <input type="number" class="form-control transfer_day" min="1" max="31" name="transfer_day"
+                                       value="<?= $proprietary->transfer_day ?>" required>
                             </div>
                         </div>
 
@@ -49,13 +55,15 @@
                 </div>
             </div>
 
-            <a href="" class="text-danger mt-2 d-block btn btn-link text-left" type="button" role="button" data-toggle="modal"
-               data-target="#modalDeleteTanant" data-id="<?= $tenant->id; ?>" data-name="<?= $tenant->name; ?>">Excluir Locatário</a>
+            <a href="" class="text-danger mt-2 d-block btn btn-link text-left" type="button" role="button"
+               data-toggle="modal"
+               data-target="#modalDelete" data-id="<?= $proprietary->id; ?>" data-name="<?= $proprietary->name; ?>">Excluir
+                Locatário</a>
         </div>
     </div>
 
-    <div class="modal fade" id="modalDeleteTanant" tabindex="-1" role="dialog"
-         aria-labelledby="modalDeleteTanant-label"
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
+         aria-labelledby="modalDelete-label"
          aria-hidden="true" xmlns="http://www.w3.org/1999/html">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -66,7 +74,7 @@
                     </button>
                 </div>
                 <div class="modal-body"></div>
-                <form class="app_form m-0" action="<?= url("/admin/locatario"); ?>" method="post"
+                <form class="app_form m-0" action="<?= url("/admin/locador"); ?>" method="post"
                       enctype="multipart/form-data" autocomplete="off">
                     <!--ACTION SPOOFING-->
                     <input type="hidden" name="action" value="delete"/>
@@ -82,14 +90,14 @@
     <?php $v->start("scripts"); ?>
     <script type="text/javascript">
         // MODAL
-        $('#modalDeleteTanant').on('show.bs.modal', function (event) {
+        $('#modalDelete').on('show.bs.modal', function (event) {
             let button = $(event.relatedTarget);
             let id = button.data('id');
             let name = button.data('name');
             let modal = $(this);
 
-            modal.find('.modal-title').html("Excluir "+name+"?");
-            modal.find('.modal-body').html("Tem certeza de que deseja excluir o locatário "+name+"? Essa ação não pode ser desfeita.");
+            modal.find('.modal-title').html("Excluir " + name + "?");
+            modal.find('.modal-body').html("Tem certeza de que deseja excluir o locador " + name + "? Essa ação não pode ser desfeita.");
             modal.find('.id').val(id);
         });
     </script>

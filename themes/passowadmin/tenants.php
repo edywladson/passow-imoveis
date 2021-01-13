@@ -75,7 +75,7 @@
                     </div>
                     <div class="form-group">
                         <label>E-mail</label>
-                        <input type="text" class="form-control email" name="email" required>
+                        <input type="email" class="form-control email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label>Telefone</label>
@@ -84,7 +84,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-success btn-editar" name="acao-editar">Cadastrar</button>
+                <button type="submit" class="btn btn-successr">Cadastrar</button>
                 </form>
             </div>
         </div>

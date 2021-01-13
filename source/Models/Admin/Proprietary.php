@@ -6,36 +6,21 @@ namespace Source\Models\Admin;
 
 use Source\Core\Model;
 
-/**
- * Class Tenant
- * @package Source\Models\Admin
- */
-class Tenant extends Model
+class Proprietary extends Model
 {
 
-    /**
-     * Tenant constructor.
-     */
     public function __construct()
     {
-        parent::__construct("tenants", ["id"], ["name", "email", "phone"]);
+        parent::__construct("proprietaries", ["id"], ["name", "email", "phone", "transfer_day"]);
     }
 
-    /**
-     * @param string $email
-     * @param string $columns
-     * @return Tenant|null
-     */
-    public function findByEmail(string $email, string $columns = '*'): ?Tenant
+    public function findByEmail(string $email, string $columns = '*'): ?Proprietary
     {
         $find = $this->find('email = :email', "email={$email}", $columns);
 
         return $find->fetch();
     }
 
-    /**
-     * save.
-     */
     public function save(): bool
     {
         if (!$this->required()) {
@@ -50,19 +35,19 @@ class Tenant extends Model
             return false;
         }
 
-        // Tenant Update
+        // Proprietary Update
         if (!empty($this->id)) {
-            $tenantId = $this->id;
+            $proprietaryId = $this->id;
 
             $verifyEmail = $this->findByEmail($this->email, 'id,email');
 
-            if ($verifyEmail->id != $tenantId && $verifyEmail) {
+            if ($verifyEmail->id != $proprietaryId && $verifyEmail) {
                 $this->message->warning('O e-mail informado já está cadastrado');
 
                 return false;
             }
 
-            $this->update($this->safe(), 'id = :id', "id={$tenantId}");
+            $this->update($this->safe(), 'id = :id', "id={$proprietaryId}");
             if ($this->fail()) {
                 $this->message->error('Erro ao atualizar, verifique os dados');
 
@@ -70,7 +55,7 @@ class Tenant extends Model
             }
         }
 
-        // Tenant Create
+        // Proprietary Create
         if (empty($this->id)) {
             if ($this->findByEmail($this->email, 'id')) {
                 $this->message->warning('O e-mail informado já está cadastrado');
@@ -78,7 +63,7 @@ class Tenant extends Model
                 return false;
             }
 
-            $tenantId = $this->create($this->safe());
+            $proprietaryId = $this->create($this->safe());
             if ($this->fail()) {
                 $this->message->error('Erro ao cadastrar, verifique os dados');
 
@@ -86,7 +71,7 @@ class Tenant extends Model
             }
         }
 
-        $this->data = ($this->findById($tenantId))->data();
+        $this->data = ($this->findById($proprietaryId))->data();
 
         return true;
     }

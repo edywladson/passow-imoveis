@@ -5,6 +5,7 @@ namespace Source\App;
 
 
 use Source\Core\Controller;
+use Source\Models\Admin\Proprietary;
 use Source\Models\Admin\Tenant;
 use Source\Models\Auth;
 use Source\Models\Report\Access;
@@ -61,6 +62,9 @@ class Admin extends Controller
         ]);
     }
 
+    /**
+     *
+     */
     public function tenants(): void
     {
         $head = $this->seo->render(
@@ -84,6 +88,9 @@ class Admin extends Controller
         ]);
     }
 
+    /**
+     * @param array|null $data
+     */
     public function tenant(?array $data): void
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -170,6 +177,9 @@ class Admin extends Controller
         ]);
     }
 
+    /**
+     *
+     */
     public function proprietaries(): void
     {
         $head = $this->seo->render(
@@ -180,13 +190,110 @@ class Admin extends Controller
             false
         );
 
+        $proprietaries = (new Proprietary())->find();
+        $pager = new Pager(url("/admin/locatarios/"));
+        $pager->pager($proprietaries->count(), 20, (!empty($data["page"]) ? $data["page"] : 1));
+
 
         echo $this->view->render("proprietaries", [
             "app" => "proprietaries",
-            "head" => $head
+            "head" => $head,
+            "proprietaries" => $proprietaries->order("id ASC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+            "paginator" => $pager->render(),
         ]);
     }
 
+    public function proprietary(?array $data): void
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        /** create */
+        if (!empty($data["action"]) && $data["action"] == "create") {
+            $proprietary = new Proprietary();
+            $proprietary->name = $data["name"];
+            $proprietary->email = $data["email"];
+            $proprietary->phone = $data["phone"];
+            $proprietary->transfer_day = $data["transfer_day"];
+
+            if (!$proprietary->save()) {
+                $json['message'] = $proprietary->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Locador cadastrado com sucesso!")->flash();
+
+            echo json_encode(["redirect" => url("/admin/locador/{$proprietary->id}")]);
+            return;
+        }
+
+        /** update */
+        if (!empty($data["action"]) && $data["action"] == "update") {
+
+            $proprietary = (new Proprietary())->findById($data["id"]);
+            $proprietary->name = $data["name"];
+            $proprietary->email = $data["email"];
+            $proprietary->phone = $data["phone"];
+            $proprietary->transfer_day = $data["transfer_day"];
+
+            if (!$proprietary->save()) {
+                $json['message'] = $proprietary->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Locador atualizado com sucesso!")->flash();
+
+            echo json_encode(['reload' => true]);
+            return;
+        }
+
+        /** delete */
+        if (!empty($data["action"]) && $data["action"] == "delete") {
+
+            $proprietary = (new Proprietary())->findById($data["id"]);
+
+            if (!$proprietary) {
+                $this->message->error("Você tentou excluir um locador que não existe ou já foi removido")->flash();
+                echo json_encode(["redirect" => url("/admin/locadores")]);
+                return;
+            }
+
+            $proprietary->destroy();
+
+            $this->message->success("Locador excluído com sucesso!")->flash();
+            $json["redirect"] = url("/admin/locadores");
+
+            echo json_encode($json);
+            return;
+        }
+
+        $head = $this->seo->render(
+            "Locador" . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.jpg"),
+            false
+        );
+
+        $proprietaryId = filter_var($data["proprietary"], FILTER_VALIDATE_INT);
+        $proprietary = (new Proprietary())->findById($proprietaryId);
+
+        if (!$proprietary) {
+            $this->message->error('Ooops! Você tentou acessar um locador que não existe')->flash();
+            redirect(url('/admin/locadores'));
+        }
+
+        echo $this->view->render("proprietary", [
+            "app" => "proprietaries",
+            "head" => $head,
+            "proprietary" => $proprietary->data()
+        ]);
+    }
+
+    /**
+     *
+     */
     public function contracts(): void
     {
         $head = $this->seo->render(

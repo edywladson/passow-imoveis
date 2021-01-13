@@ -42,6 +42,8 @@ $route->get('/locatarios', 'Admin:tenants');
 $route->get('/locatario/{tenant}', 'Admin:tenant');
 $route->post('/locatario', 'Admin:tenant');
 $route->get('/locadores', 'Admin:proprietaries');
+$route->get('/locador/{proprietary}', 'Admin:proprietary');
+$route->post('/locador', 'Admin:proprietary');
 $route->get('/contratos', 'Admin:contracts');
 
 
