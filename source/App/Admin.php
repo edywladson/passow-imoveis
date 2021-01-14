@@ -59,6 +59,7 @@ class Admin extends Controller
             false
         );
 
+
         echo $this->view->render("home", [
             "app" => "home",
             "head" => $head
@@ -385,8 +386,7 @@ class Admin extends Controller
             }
 
             $transfer = new Transfer();
-            $proprietary = (new Proprietary())->findById($data["proprietary_id"]);
-            if (!$transfer->launch($contract, $proprietary, $data)) {
+            if (!$transfer->launch($contract, $data)) {
                 $json['message'] = $transfer->message()->render();
                 echo json_encode($json);
 
@@ -397,6 +397,7 @@ class Admin extends Controller
             echo json_encode(["redirect" => url("/admin/contrato/{$contract->id}")]);
             return;
         }
+
 
         $head = $this->seo->render(
             "Contratos" . CONF_SITE_NAME,
@@ -414,10 +415,13 @@ class Admin extends Controller
         $contract->invoices = (new Invoice())->find("contract_id = :contract_id ", "contract_id={$contract->id}")->fetch(true);
         $contract->transfers = (new Transfer())->find("contract_id = :contract_id ", "contract_id={$contract->id}")->fetch(true);
 
+//        var_dump($contract->data());
+
         if (!$contract) {
             $this->message->error('Ooops! Você tentou acessar um contrato que não existe')->flash();
             redirect(url('/admin/contratos'));
         }
+
 
         echo $this->view->render("contract", [
             "app" => "contracts",
@@ -434,7 +438,7 @@ class Admin extends Controller
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
 
         /** invoice */
-        if (isset($data["invoice"])) {
+        if(isset($data["invoice"])){
             $invoice = (new Invoice())->findById($data["invoice"]);
 
             if (!$invoice) {
@@ -452,7 +456,7 @@ class Admin extends Controller
         }
 
         /** transfer */
-        if (isset($data["transfer"])) {
+        if(isset($data["transfer"])){
             $transfer = (new Transfer())->findById($data["transfer"]);
 
             if (!$transfer) {

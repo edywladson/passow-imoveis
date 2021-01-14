@@ -18,7 +18,7 @@ class Address extends Model
     public function __construct()
     {
         parent::__construct(
-            'admin_address',
+            'address',
             ['id'],
             ['street', 'number', 'complement', 'neighborhood', 'city', 'uf', 'zip']
         );

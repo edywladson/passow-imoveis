@@ -11,7 +11,7 @@ class Proprietary extends Model
 
     public function __construct()
     {
-        parent::__construct("admin_proprietaries", ["id"], ["name", "email", "phone", "transfer_day"]);
+        parent::__construct("proprietaries", ["id"], ["name", "email", "phone", "transfer_day"]);
     }
 
     public function findByEmail(string $email, string $columns = '*'): ?Proprietary

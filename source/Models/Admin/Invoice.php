@@ -19,7 +19,7 @@ class Invoice extends Model
     public function __construct()
     {
         parent::__construct(
-            'admin_invoices',
+            'invoices',
             ['id'],
             ['contract_id', 'tenant_id', 'value', 'due_at', 'repeat_when']
         );
@@ -46,7 +46,7 @@ class Invoice extends Model
         $rent_value = str_replace(['.', ','], ['', '.'], $data["rent_value"]);
         $condo_value = str_replace(['.', ','], ['', '.'], $data["condo_value"]);
         $iptu_value = str_replace(['.', ','], ['', '.'], $data["iptu_value"]);
-        $value = abs($rent_value + $condo_value + $iptu_value);
+        $value = $rent_value + $condo_value + $iptu_value;
 
         $this->contract_id = $contract->id;
         $this->tenant_id = $data["tenant_id"];
