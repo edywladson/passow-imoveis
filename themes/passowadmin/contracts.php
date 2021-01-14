@@ -18,7 +18,7 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <div class="not_found_content">
-                            <h2>Você ainda tem nenhum contrato cadastrado</h2>
+                            <h2>Você não possui contratos cadastrados</h2>
                             <p>Clique no botão Novo Contrato acima para cadastrar seu primeiro contrato</p>
                         </div>
                     </div>
@@ -78,6 +78,9 @@
                                 <option value="<?= $proprietary->id ?>"><?= $proprietary->name ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <?php if (empty($proprietaries)): ?>
+                            <small class="d-block">Você ainda não possui locadores cadastrados. <a href="<?= url("/admin/locadores"); ?>">Cadastre aqui</a></small>
+                        <?php endif; ?>
                     </div>
                     <div class="form-group">
                         <label>Locatário</label>
@@ -87,6 +90,9 @@
                                 <option value="<?= $tenant->id ?>"><?= $tenant->name ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <?php if (empty($proprietaries)): ?>
+                            <small class="d-block">Você ainda não possui locatários cadastrados. <a href="<?= url("/admin/locatarios"); ?>">Cadastre aqui</a></small>
+                        <?php endif; ?>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12 col-sm">
@@ -103,7 +109,7 @@
 
                     <div class="form-group">
                         <label>Taxa de Administração</label>
-                        <input type="number" class="form-control" min="10" name="administration_fee" required>
+                        <input type="number" class="form-control" min="1" name="administration_fee" required>
                     </div>
                     <div class="form-group">
                         <label>Valor do Aluguel</label>

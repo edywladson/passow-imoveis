@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <?php if(empty($proprietaries)): ?>
                         <div class="not_found_content">
-                            <h2>Você ainda tem nenhum locador cadastrado</h2>
+                            <h2>Você não possui locadores cadastrados</h2>
                             <p>Clique no botão Novo Locador acima para cadastrar seu primeiro locador</p>
                         </div>
                     <?php else: ?>

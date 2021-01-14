@@ -34,7 +34,7 @@ class Web extends Controller
     /**
      * SITE HOME
      */
-    public function home(): void
+    public function home(?array $data): void
     {
         $head = $this->seo->render(
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
@@ -42,11 +42,15 @@ class Web extends Controller
             url(),
             theme("/assets/images/share.jpg")
         );
+        $pages = (new Vista())->find(1, true)->callback();
+        $pager = new Pager(url("/"));
+        $pager->pager($pages->total, 6, (!empty($data["page"]) ? $data["page"] : 1));
 
         echo $this->view->render("home", [
             "head" => $head,
-            "proprietaries" => (new Vista())->all()->callback(),
-            "districts" => (new Vista())->findDistrict()->callback()
+            "proprietaries" => (new Vista())->find($pager->page())->callback(),
+            "districts" => (new Vista())->findContent()->callback(),
+            "paginator" => $pager->render()
         ]);
     }
 
@@ -60,7 +64,7 @@ class Web extends Controller
             $type = ($data['property_type']) ? filter_var($data['property_type'], FILTER_SANITIZE_STRIPPED) : 'all';
             $neighborhoods = ($data['neighborhoods']) ? filter_var($data['neighborhoods'], FILTER_SANITIZE_STRIPPED) : 'all';
             $dorms = ($data['dorms']) ? filter_var($data['dorms'], FILTER_SANITIZE_STRIPPED) : 'all';
-            $value_sale = ($data['value_rent']) ? filter_var($data['value_sale'], FILTER_SANITIZE_STRIPPED) : 'all';
+            $value_sale = ($data['value_sale']) ? filter_var($data['value_sale'], FILTER_SANITIZE_STRIPPED) : 'all';
             $value_rent = ($data['value_rent']) ? filter_var($data['value_rent'], FILTER_SANITIZE_STRIPPED) : 'all';
             $value = ($data["goal"] == 'Venda' ? $value_sale : $value_rent);
             $code = ($data['code']) ? filter_var($data['code'], FILTER_SANITIZE_STRIPPED) : 'all';
@@ -83,21 +87,25 @@ class Web extends Controller
             "Categoria" => ($search['type'] != 'all') ? urlencode($search['type']) : '',
             "Dormitorios" => ($search['dorms'] != 'all') ? ($search['dorms'] == 5 ? ['>=', 5] : urlencode($search['dorms'])) : '',
             "Bairro" => ($search['neighborhoods'] != 'all') ? urlencode($search['neighborhoods']) : '',
-            "ValorVenda" => ($search['value'] != 'all') ? urlencode($search['value']) : '',
-            "ValorLocacao" => ($search['value'] != 'all') ? urlencode($search['value']) : '',
+            ($search["object"] == "Venda" ? "ValorVenda" : "ValorLocacao") => ($search['value'] != 'all') ? urlencode($search['value']) : '',
         ];
+
         $filter = array_filter($filter);
-        $proprietaries = (new Vista())->find($filter)->callback();
+
+        $pages = (new Vista())->find(1, true, $filter)->callback();
+        $pager = new Pager(url("/buscar/{$search['object']}/{$search['type']}/{$search['neighborhoods']}/{$search['dorms']}/{$search['value']}/{$search['code']}/"));
+        $pager->pager($pages->total, 6, (!empty($data["page"]) ? $data["page"] : 1));
+
+        $proprietaries = (new Vista())->find($pager->page(), false, $filter)->callback();
         if(isset($proprietaries->message) && $proprietaries->message == 'A pesquisa não retornou resultados.'){
             $proprietaries = null;
         }
 
-        $districts = (new Vista())->findDistrict()->callback();
-
         echo $this->view->render("home", [
             "head" => $head,
             "proprietaries" => $proprietaries,
-            "districts" => $districts
+            "districts" => (new Vista())->findContent()->callback(),
+            "paginator" => $pager->render()
         ]);
     }
 

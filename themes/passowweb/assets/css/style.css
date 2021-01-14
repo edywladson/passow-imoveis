@@ -294,6 +294,49 @@ header .header_phones span {
     justify-content: space-between;
 }
 
+/*DEFAULT PAGINATOR*/
+.paginator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto 0;
+}
+
+.paginator a, .paginator span {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #e3e6f0;
+    border-right: 0;
+    color: #7d7d83;
+    font-weight: 700;
+    text-decoration: none;
+    transition-duration: 0.2s;
+}
+
+.paginator a:first-of-type {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: none;
+}
+
+.paginator a:last-of-type {
+    border: none;
+    border-left: 1px solid #e3e6f0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.paginator a:hover {
+    background: var(--secondary);
+    background-size: 200%;
+}
+
+.paginator span {
+    background: #dfe3e8;
+}
+
 
 /*FOOTER*/
 footer {

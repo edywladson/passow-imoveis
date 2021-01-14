@@ -19,6 +19,7 @@ $route->get('/', 'Web:home');
 $route->get('/{page}', 'Web:home');
 $route->post('/buscar', 'Web:search');
 $route->get('/buscar/{object}/{type}/{neighborhoods}/{dorms}/{value}/{code}', 'Web:search');
+$route->get('/buscar/{object}/{type}/{neighborhoods}/{dorms}/{value}/{code}/{page}', 'Web:search');
 
 //auth
 $route->group(null);

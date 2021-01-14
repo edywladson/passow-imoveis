@@ -18,20 +18,15 @@
                     <div class="form-row">
                         <div class="col-6 col-sm-6 col-md">
                             <select name="property_type" id="propertyType" class="form-control">
-                                <option value="" selected>Tipos de Imóveis</option>
-                                <option value="Casa">Casa</option>
-                                <option value="Apartamento">Apartamento</option>
-                                <option value="Casa Em Condominio">Casa Em Condomínio</option>
-                                <option value="Cobertura">Cobertura</option>
-                                <option value="Loft">Loft</option>
-                                <option value="Terreno">Terreno</option>
-                                <option value="casa">Casa</option>
-                                <option value="Terreno Em Condominio">Terreno Em Condomínio</option>
+                                <option value="all" selected>Tipos de Imóveis</option>
+                                <?php foreach ($districts->Categoria as $type): ?>
+                                    <option value="<?= $type ?>"><?= $type ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-6 col-sm-6 col-md">
                             <select name="neighborhoods" id="neighborhoods" class="form-control">
-                                <option value="" selected>Bairros</option>
+                                <option value="all" selected>Bairros</option>
                                 <?php for ($i = 1; $i < count($districts->Bairro); $i++): ?>
                                     <option value="<?= $districts->Bairro[$i] ?>"><?= $districts->Bairro[$i] ?></option>
                                 <?php endfor; ?>
@@ -160,6 +155,11 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
+
+
+                <div class="col-12">
+                    <?= $paginator; ?>
+                </div>
             <?php endif; ?>
         </div>
     </div>

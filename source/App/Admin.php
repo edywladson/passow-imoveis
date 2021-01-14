@@ -349,6 +349,12 @@ class Admin extends Controller
                 return;
             }
 
+            if(empty($data["proprietary_id"]) || empty($data["tenant_id"])){
+                $json["message"] = $this->message->warning("Você precisa definir o proprietário e o locatário")->render();
+                echo json_encode($json);
+                return;
+            }
+
             $address = (new Address());
             $address->street = $immobile->Endereco;
             $address->number = $immobile->Numero;

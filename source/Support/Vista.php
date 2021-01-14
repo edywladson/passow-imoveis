@@ -31,59 +31,26 @@ class Vista
         $this->apiKey = CONF_VISTA_API_KEY;
     }
 
+
     /**
-     * @param string|null $category
-     * @param string|null $neighborhoods
-     * @param int|null $dorms
-     * @param string|null $value
-     * @param string|null $code
-     * @param string $goal
-     * @return $this
+     * @param int $page
+     * @param bool $total
+     * @param array $filter
+     * @return $this|null
      */
-    public function all(int $page = 1): ?Vista
+    public function find(int $page = 1, bool $total = false, array $filter = []): ?Vista
     {
-        $this->endpoint = "/imoveis/listar?key={$this->apiKey}";
+        if ($total) {
+            $total = "&showtotal=1";
+        } else {
+            $total = '';
+        }
+
+        $this->endpoint = "/imoveis/listar?key={$this->apiKey}{$total}";
         $this->build = [
             "fields" => [
                 "Codigo",
                 "FotoDestaque",
-                "Categoria",
-                "Endereco",
-                "Bairro",
-                "Cidade",
-                "UF",
-                "ValorVenda",
-                "ValorLocacao",
-                "Dormitorios",
-                "Suites",
-                "Vagas",
-                "BanheiroSocialQtd",
-                "AreaTotal",
-                "AreaPrivativa"
-            ],
-            'filter' => [
-                "Cidade" => urlencode("Porto Alegre")
-            ],
-            'paginacao' => [
-                'pagina' => $page,
-                'quantidade' => 6
-            ]
-        ];
-        $this->get();
-        return $this;
-    }
-
-    /**
-     * @param array $filter
-     * @param int $page
-     * @return $this|null
-     */
-    public function find(array $filter, int $page = 1): ?Vista
-    {
-        $this->endpoint = "/imoveis/listar?key={$this->apiKey}";
-        $this->build = [
-            "fields" => [
-                "Codigo",
                 "Categoria",
                 "Endereco",
                 "Bairro",
@@ -158,12 +125,13 @@ class Vista
     /**
      * @return $this|null
      */
-    public function findDistrict(): ?Vista
+    public function findContent(): ?Vista
     {
         $this->endpoint = "/imoveis/listarConteudo?key={$this->apiKey}";
         $this->build = [
             "fields" => [
-                "Bairro"
+                "Bairro",
+                "Categoria"
             ],
             'filter' => [
                 "Cidade" => urlencode("Porto Alegre")

@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <?php if(empty($tenants)): ?>
                         <div class="not_found_content">
-                            <h2>Você ainda tem nenhum locatário cadastrado</h2>
+                            <h2>Você não possui locatários cadastrados</h2>
                             <p>Clique no botão Novo Locatário acima para cadastrar seu primeiro locatário</p>
                         </div>
                     <?php else: ?>
@@ -83,7 +83,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-successr">Cadastrar</button>
+                <button type="submit" class="btn btn-success">Cadastrar</button>
                 </form>
             </div>
         </div>
