@@ -5,9 +5,12 @@ namespace Source\App;
 
 
 use Source\Core\Controller;
+use Source\Models\Admin\Address;
 use Source\Models\Admin\Contract;
+use Source\Models\Admin\Invoice;
 use Source\Models\Admin\Proprietary;
 use Source\Models\Admin\Tenant;
+use Source\Models\Admin\Transfer;
 use Source\Models\Auth;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
@@ -63,10 +66,11 @@ class Admin extends Controller
         ]);
     }
 
+
     /**
-     *
+     * @param array|null $data
      */
-    public function tenants(): void
+    public function tenants(?array $data): void
     {
         $head = $this->seo->render(
             "Locatários" . CONF_SITE_NAME,
@@ -178,10 +182,11 @@ class Admin extends Controller
         ]);
     }
 
+
     /**
-     *
+     * @param array|null $data
      */
-    public function proprietaries(): void
+    public function proprietaries(?array $data): void
     {
         $head = $this->seo->render(
             "Locadores" . CONF_SITE_NAME,
@@ -204,6 +209,9 @@ class Admin extends Controller
         ]);
     }
 
+    /**
+     * @param array|null $data
+     */
     public function proprietary(?array $data): void
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
@@ -292,18 +300,19 @@ class Admin extends Controller
         ]);
     }
 
+
     /**
-     *
+     * @param array|null $data
      */
-    public function contracts(): void
+    public function contracts(?array $data): void
     {
         $contracts = (new Contract())->find();
+
         $pager = new Pager(url("/admin/contratos/"));
-        $pager->pager($contracts->count(), 20, (!empty($data["page"]) ? $data["page"] : 1));
+        $pager->pager($contracts->count(), 9, (!empty($data["page"]) ? $data["page"] : 1));
 
-        $proprietaties = (new Proprietary())->find();
-        $ternants = (new Tenant())->find();
-
+        $proprietaries = (new Proprietary())->find();
+        $tenants = (new Tenant())->find();
 
         $head = $this->seo->render(
             "Contratos" . CONF_SITE_NAME,
@@ -317,35 +326,43 @@ class Admin extends Controller
             "app" => "contracts",
             "head" => $head,
             "contracts" => $contracts->order("id ASC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
-            "proprietaties" => $proprietaties->fetch(true),
-            "tenants" => $ternants->fetch(true),
+            "proprietaries" => $proprietaries->fetch(true),
+            "tenants" => $tenants->fetch(true),
             "paginator" => $pager->render()
         ]);
     }
 
+    /**
+     * @param array|null $data
+     */
     public function contract(?array $data): void
     {
-        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
-
-        if (!empty($data["action"]) && $data["action"] == "find_immobile") {
-            $immobile = (new Vista())->findImmobile($data["query"])->callback();
-            var_dump($immobile);
-        }
-
         /** create */
         if (!empty($data["action"]) && $data["action"] == "create") {
+            $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
             $immobile = (new Vista())->findImmobile($data["immobile"])->callback();
 
-            if(isset($immobile->status) && $immobile->status == 400){
+            if (isset($immobile->status) && $immobile->status == 400) {
                 $json["message"] = $this->message->warning($immobile->message)->render();
                 echo json_encode($json);
                 return;
             }
 
+            $address = (new Address());
+            $address->street = $immobile->Endereco;
+            $address->number = $immobile->Numero;
+            $address->complement = $immobile->Complemento;
+            $address->neighborhood = $immobile->Bairro;
+            $address->city = $immobile->Cidade;
+            $address->uf = $immobile->UF;
+            $address->zip = $immobile->CEP;
+            $address->save();
+
             $contract = new Contract();
             $contract->immobile_code = $immobile->Codigo;
-            $contract->immobile_address = $immobile->Endereco;
-            $contract->proprietary_id = $data["property_id"];
+            $contract->address_id = $address->id;
+            $contract->proprietary_id = $data["proprietary_id"];
             $contract->tenant_id = $data["tenant_id"];
             $contract->started = date('Y-m-d', strtotime($data["started"]));
             $contract->closing = date('Y-m-d', strtotime($data["closing"]));
@@ -360,13 +377,26 @@ class Admin extends Controller
                 return;
             }
 
-            $this->message->success("Contrato cadastrado com sucesso!")->flash();
-            $json["reload"] = true;
+            $invoice = new Invoice();
+            if (!$invoice->launch($contract, $data)) {
+                $json['message'] = $invoice->message()->render();
+                echo json_encode($json);
 
-            echo json_encode($json);
+                return;
+            }
+
+            $transfer = new Transfer();
+            if (!$transfer->launch($contract, $data)) {
+                $json['message'] = $transfer->message()->render();
+                echo json_encode($json);
+
+                return;
+            }
+
+            $this->message->success("Contrato cadastrado com sucesso!")->flash();
+            echo json_encode(["redirect" => url("/admin/contrato/{$contract->id}")]);
             return;
         }
-
 
 
         $head = $this->seo->render(
@@ -377,11 +407,72 @@ class Admin extends Controller
             false
         );
 
+        $contractId = filter_var($data["contract"], FILTER_VALIDATE_INT);
+        $contract = (new Contract())->findById($contractId);
+        $contract->address = (new Address())->findById($contract->address_id);
+        $contract->proprietary = (new Proprietary())->findById($contract->proprietary_id);
+        $contract->tenant = (new Tenant())->findById($contract->tenant_id);
+        $contract->invoices = (new Invoice())->find("contract_id = :contract_id ", "contract_id={$contract->id}")->fetch(true);
+        $contract->transfers = (new Transfer())->find("contract_id = :contract_id ", "contract_id={$contract->id}")->fetch(true);
 
-        echo $this->view->render("contracts", [
+//        var_dump($contract->data());
+
+        if (!$contract) {
+            $this->message->error('Ooops! Você tentou acessar um contrato que não existe')->flash();
+            redirect(url('/admin/contratos'));
+        }
+
+
+        echo $this->view->render("contract", [
             "app" => "contracts",
-            "head" => $head
+            "head" => $head,
+            "contract" => $contract
         ]);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function onpaid(array $data): void
+    {
+        $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);
+
+        /** invoice */
+        if(isset($data["invoice"])){
+            $invoice = (new Invoice())->findById($data["invoice"]);
+
+            if (!$invoice) {
+                $this->message->error('Ooops! Ocorreu um erro ao atualizar o lançamento :/')->flash();
+                $json['reload'] = true;
+                echo json_encode($json);
+
+                return;
+            }
+
+            $invoice->status = ($invoice->status == 'paid' ? 'unpaid' : 'paid');
+            $invoice->save();
+            $json['onpaid'] = true;
+            echo json_encode($json);
+        }
+
+        /** transfer */
+        if(isset($data["transfer"])){
+            $transfer = (new Transfer())->findById($data["transfer"]);
+
+            if (!$transfer) {
+                $this->message->error('Ooops! Ocorreu um erro ao atualizar o lançamento :/')->flash();
+                $json['reload'] = true;
+                echo json_encode($json);
+
+                return;
+            }
+
+            $transfer->status = ($transfer->status == 'realized' ? 'unrealized' : 'realized');
+            $transfer->save();
+
+            $json['onpaid'] = true;
+            echo json_encode($json);
+        }
     }
 
     /**

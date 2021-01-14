@@ -10,10 +10,10 @@
             <div class="card shadow hover_item">
                 <div class="card-body">
                     <div class="not_found_content">
-                        <img src="<?= theme("/assets/images/icons/store.svg", CONF_VIEW_ADMIN) ?>" alt="" width="100">
+<!--                        <img src="--><?//= theme("/assets/images/icons/store.svg", CONF_VIEW_ADMIN) ?><!--" alt="" width="100">-->
                         <h2>Insera seus Locatários</h2>
                         <p>Você pode inserir seus locatários de forma simples e rápida</p>
-                        <a href="<?= url("/admin/locatarios") ?>" class="store-item btn btn-primary" type="button" role="button">
+                        <a href="<?= url("/admin/locatarios") ?>" class="store-item btn btn-success" type="button" role="button">
                             Cadastrar Locatário
                         </a>
                     </div>
@@ -24,10 +24,9 @@
             <div class="card shadow hover_item">
                 <div class="card-body">
                     <div class="not_found_content">
-                        <img src="<?= theme("/assets/images/icons/store.svg", CONF_VIEW_ADMIN) ?>" alt="" width="100">
                         <h2>Insera seus Locadores</h2>
                         <p>Você pode inserir seus locadores de forma simples e rápida</p>
-                        <a href="<?= url("/admin/locadores") ?>" class="store-item btn btn-primary" type="button" role="button">
+                        <a href="<?= url("/admin/locadores") ?>" class="store-item btn btn-success" type="button" role="button">
                             Cadastrar Locador
                         </a>
                     </div>
@@ -38,10 +37,9 @@
             <div class="card shadow hover_item">
                 <div class="card-body">
                     <div class="not_found_content">
-                        <img src="<?= theme("/assets/images/icons/store.svg", CONF_VIEW_ADMIN) ?>" alt="" width="100">
                         <h2>Crie seus Contratos</h2>
                         <p>Com apenas alguns cliques, você poderá criar seus contratos</p>
-                        <a href="<?= url("/admin/contratos") ?>" class="store-item btn btn-primary" type="button" role="button">
+                        <a href="<?= url("/admin/contratos") ?>" class="store-item btn btn-success" type="button" role="button">
                             Cadastrar Contratos
                         </a>
                     </div>

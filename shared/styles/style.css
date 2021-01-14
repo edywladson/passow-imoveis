@@ -78,3 +78,6 @@
 .icon-shower:before {
     content: "\e908";
 }
+.icon-check:before {
+    content: "\ea10";
+}

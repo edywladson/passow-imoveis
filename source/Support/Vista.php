@@ -73,6 +73,11 @@ class Vista
         return $this;
     }
 
+    /**
+     * @param array $filter
+     * @param int $page
+     * @return $this|null
+     */
     public function find(array $filter, int $page = 1): ?Vista
     {
         $this->endpoint = "/imoveis/listar?key={$this->apiKey}";
@@ -106,6 +111,10 @@ class Vista
         return $this;
     }
 
+    /**
+     * @param string $code
+     * @return $this|null
+     */
     public function findImmobile(string $code): ?Vista
     {
         $this->endpoint = "/imoveis/detalhes?key={$this->apiKey}&imovel={$code}";
@@ -114,9 +123,12 @@ class Vista
                 "Codigo",
                 "Categoria",
                 "Endereco",
+                "Numero",
+                "Complemento",
                 "Bairro",
                 "Cidade",
                 "UF",
+                "CEP",
                 "ValorVenda",
                 "ValorLocacao",
                 "Dormitorios",
@@ -136,6 +148,25 @@ class Vista
                     'Destaque'
                 ]
                 ]
+            ],
+
+        ];
+        $this->get();
+        return $this;
+    }
+
+    /**
+     * @return $this|null
+     */
+    public function findDistrict(): ?Vista
+    {
+        $this->endpoint = "/imoveis/listarConteudo?key={$this->apiKey}";
+        $this->build = [
+            "fields" => [
+                "Bairro"
+            ],
+            'filter' => [
+                "Cidade" => urlencode("Porto Alegre")
             ],
 
         ];

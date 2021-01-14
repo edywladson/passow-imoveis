@@ -162,6 +162,22 @@ function str_search(?string $search): string
 }
 
 /**
+ * ###################
+ * ###   NUMEREC   ###
+ * ###################
+ */
+
+/**
+ * @param int $percents
+ * @param float $value
+ * @return float
+ */
+function num_percent(int $percent, float $value): float
+{
+    return $value - ($value / 100 * $percent);
+}
+
+/**
  * ###############
  * ###   URL   ###
  * ###############
@@ -325,6 +341,40 @@ function date_fmt_back(?string $date): ?string
     }
 
     return implode("-", array_reverse(explode("/", $date)));
+}
+
+
+/**
+ * @param string $dateStart
+ * @param string $dateEnd
+ * @param string $type
+ * @param string $sep
+ * @return float
+ */
+function date_diff_interval(string $dateStart, string $dateEnd, string $type = '', string $sep = '-'): float
+{
+    $dateStart = explode($sep, $dateStart);
+    $dateEnd = explode($sep, $dateEnd);
+    switch ($type) {
+        case 'A':
+            $sec = 31536000;
+            break;
+        case 'M':
+            $sec = 2592000;
+            break;
+        case 'D':
+            $sec = 86400;
+            break;
+        case 'H':
+            $sec = 3600;
+            break;
+        case 'MI':
+            $sec = 60;
+            break;
+        default:
+            $sec = 1;
+    }
+    return floor(((mktime(0, 0, 0, $dateEnd[1], $dateEnd[2], $dateEnd[0]) - mktime(0, 0, 0, $dateStart[1], $dateStart[2], $dateStart[0])) / $sec));
 }
 
 /**

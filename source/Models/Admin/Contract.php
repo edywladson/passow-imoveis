@@ -14,10 +14,10 @@ class Contract extends Model
             "contracts",
             ["id"],
             [
-                "immobile_code",
-                "immobile_address",
                 "proprietary_id",
                 "tenant_id",
+                "address_id",
+                "immobile_code",
                 "started",
                 "closing",
                 "administration_fee",
@@ -25,5 +25,10 @@ class Contract extends Model
                 "condo_value",
                 "iptu_value"
             ]);
+    }
+
+    public function findComplete()
+    {
+
     }
 }

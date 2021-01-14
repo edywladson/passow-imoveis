@@ -16,6 +16,7 @@ $route->namespace('Source\\App');
 // WEB ROUTES
 $route->group(null);
 $route->get('/', 'Web:home');
+$route->get('/{page}', 'Web:home');
 $route->post('/buscar', 'Web:search');
 $route->get('/buscar/{object}/{type}/{neighborhoods}/{dorms}/{value}/{code}', 'Web:search');
 
@@ -39,15 +40,18 @@ $route->get('/obrigado/{email}', 'Web:success');
 $route->group('/admin');
 $route->get('/', 'Admin:home');
 $route->get('/locatarios', 'Admin:tenants');
+$route->get('/locatarios/{page}', 'Admin:tenants');
 $route->get('/locatario/{tenant}', 'Admin:tenant');
 $route->post('/locatario', 'Admin:tenant');
 $route->get('/locadores', 'Admin:proprietaries');
+$route->get('/locadores/{page}', 'Admin:proprietaries');
 $route->get('/locador/{proprietary}', 'Admin:proprietary');
 $route->post('/locador', 'Admin:proprietary');
 $route->get('/contratos', 'Admin:contracts');
+$route->get('/contratos/{page}', 'Admin:contracts');
+$route->get('/contrato/{contract}', 'Admin:contract');
 $route->post('/contrato', 'Admin:contract');
-
-
+$route->post('/onpaid', 'Admin:onpaid');
 $route->get("/sair", "Admin:logout");
 
 // ERROR ROUTES

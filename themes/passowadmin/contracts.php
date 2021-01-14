@@ -1,6 +1,6 @@
 <?php $v->layout("_theme"); ?>
 
-<div class="products_content mini_content">
+<div class="mini_content">
     <div class="title_content d-flex align-items-center">
         <h2 class="mr-auto p-2">Contratos</h2>
 
@@ -13,46 +13,38 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-body">
-                    <?php if (empty($contracts)): ?>
+        <?php if (empty($contracts)): ?>
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body">
                         <div class="not_found_content">
-                            <img src="<?= theme("assets/images/icons/product.svg", CONF_VIEW_ADMIN) ?>" alt=""
-                                 width="100">
                             <h2>Você ainda tem nenhum contrato cadastrado</h2>
                             <p>Clique no botão Novo Contrato acima para cadastrar seu primeiro contrato</p>
                         </div>
-                    <?php else: ?>
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">E-mail</th>
-                                <th scope="col">Telefone</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <?php foreach ($contracts as $contract): ?>
-                                <tr>
-                                    <th scope="row"><?= $contract->id; ?></th>
-                                    <td scope="row"><a
-                                                href="<?= url("/admin/locatario/{$contract->id}"); ?>"><?= $contract->name; ?></a>
-                                    </td>
-                                    <td scope="row"><?= $contract->email; ?></td>
-                                    <td scope="row"><?= $contract->phone; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
-
-                        <?= $paginator; ?>
-                    <?php endif; ?>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php else: ?>
+            <?php foreach ($contracts as $contract): ?>
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card shadow hover_item">
+                        <div class="card-body">
+                            <div class="not_found_content">
+                                <h2>Contrato - <?= $contract->id; ?></h2>
+                                <a href="<?= url("/admin/contrato/{$contract->id}"); ?>"
+                                   class="store-item btn btn-success" type="button" role="button">
+                                    Ver Contrato
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+            <div class="col-12">
+                <?= $paginator; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -80,9 +72,9 @@
                     </div>
                     <div class="form-group">
                         <label>Proprietário</label>
-                        <select name="property_id" class="form-control">
+                        <select name="proprietary_id" class="form-control">
                             <option value="" selected>Escolha o proprietário</option>
-                            <?php foreach ($proprietaties as $proprietary): ?>
+                            <?php foreach ($proprietaries as $proprietary): ?>
                                 <option value="<?= $proprietary->id ?>"><?= $proprietary->name ?></option>
                             <?php endforeach; ?>
                         </select>

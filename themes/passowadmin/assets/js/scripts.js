@@ -144,26 +144,28 @@ $(function () {
     });
 
     /*
-     * AJAX IMMOBILE
+     * TOOGLE CLASS
      */
-    // $(".ajax_immobile").focusout(function () {
-    //
-    //     var form = $(".app_form");
-    //     var query = $(this).val();
-    //
-    //     if (query !== '') {
-    //         $.ajax({
-    //             url: form.attr("action"),
-    //             type: "POST",
-    //             data: {query: query, action: "find_immobile"},
-    //             success: function (response) {
-    //                 $(".results").fadeIn();
-    //                 $(".results").html(response);
-    //             }
-    //         });
-    //     }
-    //
-    // });
+    $("[data-toggleclass]").click(function (e) {
+        var clicked = $(this);
+        var toggle = clicked.data("toggleclass");
+        clicked.toggleClass(toggle);
+    });
+
+    /*
+     * APP ON PAID
+     */
+    $("[data-onpaid]").click(function (e) {
+        var clicked = $(this);
+        var dataset = clicked.data();
+
+        $.post(clicked.data("onpaid"), dataset, function (response) {
+            //reload by error
+            if (response.reload) {
+                window.location.reload();
+            }
+        }, "json");
+    });
 
     /*
      * IMAGE RENDER

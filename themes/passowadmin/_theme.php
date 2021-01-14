@@ -23,8 +23,8 @@
     <!-- Sidebar  -->
     <nav id="sidebar" class="main_sidebar">
         <div class="sidebar_header">
-            <img src="<?= theme("/assets/images/logo-updase-icon.svg", CONF_VIEW_ADMIN); ?>" class="mobile_logo" alt="Passow Imóveis" title="Passow Imóveis">
-            <img src="<?= theme("/assets/images/logo.png", CONF_VIEW_ADMIN); ?>" class="desktop_logo" alt="Passow Imóveis" title="Passow Imóveis">
+<!--            <img src="--><?//= theme("/assets/images/logo-updase-icon.svg", CONF_VIEW_ADMIN); ?><!--" class="mobile_logo" alt="Passow Imóveis" title="Passow Imóveis">-->
+<!--            <img src="--><?//= theme("/assets/images/logo.png", CONF_VIEW_ADMIN); ?><!--" class="desktop_logo" alt="Passow Imóveis" title="Passow Imóveis">-->
         </div>
 
         <div class="sidebar_body">
@@ -53,11 +53,11 @@
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="<?= url("/admin/perfil"); ?>">
-                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Minha Conta
-                        </a>
-                        <div class="dropdown-divider"></div>
+<!--                        <a class="dropdown-item" href="--><?//= url("/admin/perfil"); ?><!--">-->
+<!--                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>-->
+<!--                            Minha Conta-->
+<!--                        </a>-->
+<!--                        <div class="dropdown-divider"></div>-->
                         <a class="dropdown-item" href="<?= url("/admin/sair"); ?>">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Sair

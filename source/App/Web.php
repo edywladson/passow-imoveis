@@ -36,8 +36,6 @@ class Web extends Controller
      */
     public function home(): void
     {
-        $properties = (new Vista())->all()->callback();
-
         $head = $this->seo->render(
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
             CONF_SITE_DESC,
@@ -47,7 +45,8 @@ class Web extends Controller
 
         echo $this->view->render("home", [
             "head" => $head,
-            "properties" => $properties
+            "proprietaries" => (new Vista())->all()->callback(),
+            "districts" => (new Vista())->findDistrict()->callback()
         ]);
     }
 
@@ -80,19 +79,25 @@ class Web extends Controller
         );
 
         $filter = [
-            "Codigo" => ($search['code'] != 'all') ? $search['code'] : '',
-            "Categoria" => ($search['type'] != 'all') ? $search['type'] : '',
-            "Dormitorios" => ($search['dorms'] != 'all') ? ($search['dorms'] == 5 ? ['>=', 5] : $search['dorms']) : '',
-            "Bairro" => ($search['neighborhoods'] != 'all') ? $search['neighborhoods'] : '',
-            "ValorVenda" => ($search['value'] != 'all') ? $search['value'] : '',
-            "ValorLocacao" => ($search['value'] != 'all') ? $search['value'] : '',
+            "Codigo" => ($search['code'] != 'all') ? urlencode($search['code']) : '',
+            "Categoria" => ($search['type'] != 'all') ? urlencode($search['type']) : '',
+            "Dormitorios" => ($search['dorms'] != 'all') ? ($search['dorms'] == 5 ? ['>=', 5] : urlencode($search['dorms'])) : '',
+            "Bairro" => ($search['neighborhoods'] != 'all') ? urlencode($search['neighborhoods']) : '',
+            "ValorVenda" => ($search['value'] != 'all') ? urlencode($search['value']) : '',
+            "ValorLocacao" => ($search['value'] != 'all') ? urlencode($search['value']) : '',
         ];
         $filter = array_filter($filter);
-        $properties = (new Vista())->find($filter)->callback();
+        $proprietaries = (new Vista())->find($filter)->callback();
+        if(isset($proprietaries->message) && $proprietaries->message == 'A pesquisa não retornou resultados.'){
+            $proprietaries = null;
+        }
+
+        $districts = (new Vista())->findDistrict()->callback();
 
         echo $this->view->render("home", [
             "head" => $head,
-            "properties" => $properties
+            "proprietaries" => $proprietaries,
+            "districts" => $districts
         ]);
     }
 

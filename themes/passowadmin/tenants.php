@@ -1,6 +1,6 @@
 <?php $v->layout("_theme"); ?>
 
-<div class="products_content mini_content">
+<div class="mini_content">
     <div class="title_content d-flex align-items-center">
         <h2 class="mr-auto p-2">Locatários</h2>
 
@@ -17,7 +17,6 @@
                 <div class="card-body">
                     <?php if(empty($tenants)): ?>
                         <div class="not_found_content">
-                            <img src="<?= theme("assets/images/icons/product.svg", CONF_VIEW_ADMIN) ?>" alt="" width="100">
                             <h2>Você ainda tem nenhum locatário cadastrado</h2>
                             <p>Clique no botão Novo Locatário acima para cadastrar seu primeiro locatário</p>
                         </div>

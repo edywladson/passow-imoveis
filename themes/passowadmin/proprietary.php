@@ -1,6 +1,6 @@
 <?php $v->layout("_theme"); ?>
 
-<div class="products_content mini_content">
+<div class="mini_content">
     <header class="title_content">
         <div class="row d-flex align-items-center">
             <div class="col">
