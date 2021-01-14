@@ -6,8 +6,16 @@ namespace Source\Models\Admin;
 
 use Source\Core\Model;
 
+/**
+ * Class Transfer
+ * @package Source\Models\Admin
+ */
 class Transfer extends Model
 {
+
+    /**
+     * Transfer constructor.
+     */
     public function __construct()
     {
         parent::__construct(
@@ -17,6 +25,12 @@ class Transfer extends Model
         );
     }
 
+    /**
+     * @param Contract $contract
+     * @param Proprietary $proprietary
+     * @param array $data
+     * @return $this|null
+     */
     public function launch(Contract $contract, Proprietary $proprietary, array $data): ?Transfer
     {
         $data = filter_var_array($data, FILTER_SANITIZE_STRIPPED);

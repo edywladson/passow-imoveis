@@ -6,8 +6,15 @@ namespace Source\Models\Admin;
 
 use Source\Core\Model;
 
+/**
+ * Class Contract
+ * @package Source\Models\Admin
+ */
 class Contract extends Model
 {
+    /**
+     * Contract constructor.
+     */
     public function __construct()
     {
         parent::__construct(
@@ -25,10 +32,5 @@ class Contract extends Model
                 "condo_value",
                 "iptu_value"
             ]);
-    }
-
-    public function findComplete()
-    {
-
     }
 }

@@ -6,14 +6,26 @@ namespace Source\Models\Admin;
 
 use Source\Core\Model;
 
+/**
+ * Class Proprietary
+ * @package Source\Models\Admin
+ */
 class Proprietary extends Model
 {
 
+    /**
+     * Proprietary constructor.
+     */
     public function __construct()
     {
         parent::__construct("admin_proprietaries", ["id"], ["name", "email", "phone", "transfer_day"]);
     }
 
+    /**
+     * @param string $email
+     * @param string $columns
+     * @return Proprietary|null
+     */
     public function findByEmail(string $email, string $columns = '*'): ?Proprietary
     {
         $find = $this->find('email = :email', "email={$email}", $columns);
@@ -21,6 +33,9 @@ class Proprietary extends Model
         return $find->fetch();
     }
 
+    /**
+     * @return bool
+     */
     public function save(): bool
     {
         if (!$this->required()) {
