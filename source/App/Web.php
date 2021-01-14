@@ -42,6 +42,7 @@ class Web extends Controller
             url(),
             theme("/assets/images/share.jpg")
         );
+
         $pages = (new Vista())->find(1, true)->callback();
         $pager = new Pager(url("/"));
         $pager->pager($pages->total, 6, (!empty($data["page"]) ? $data["page"] : 1));

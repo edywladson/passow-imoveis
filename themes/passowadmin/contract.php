@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="list-check-price">
                                     R$ <?= str_price($invoice->value); ?>
-                                    <span class="check icon-check transition"
+                                    <span class="check icon-check transition <?= ($invoice->status == 'paid' ? 'active icon-thumbs-o-down icon-thumbs-o-up' : '')  ?>"
                                           data-toggleclass="active icon-thumbs-o-down icon-thumbs-o-up"
                                           data-onpaid="<?= url("/admin/onpaid"); ?>"
                                           data-invoice="<?= $invoice->id; ?>"></span>
@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="list-check-price">
                                     R$ <?= str_price($transfer->value); ?>
-                                    <span class="check icon-check transition"
+                                    <span class="check icon-check transition <?= ($transfer->status == 'realized' ? 'active' : '')  ?>"
                                           data-toggleclass="active icon-thumbs-o-down icon-thumbs-o-up"
                                           data-onpaid="<?= url("/admin/onpaid"); ?>"
                                           data-transfer="<?= $transfer->id; ?>"></span>

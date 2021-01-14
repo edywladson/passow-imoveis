@@ -90,7 +90,7 @@
                                 <option value="<?= $tenant->id ?>"><?= $tenant->name ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <?php if (empty($proprietaries)): ?>
+                        <?php if (empty($tenants)): ?>
                             <small class="d-block">Você ainda não possui locatários cadastrados. <a href="<?= url("/admin/locatarios"); ?>">Cadastre aqui</a></small>
                         <?php endif; ?>
                     </div>

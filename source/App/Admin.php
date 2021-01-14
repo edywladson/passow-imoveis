@@ -59,7 +59,6 @@ class Admin extends Controller
             false
         );
 
-
         echo $this->view->render("home", [
             "app" => "home",
             "head" => $head
@@ -83,7 +82,6 @@ class Admin extends Controller
         $tenants = (new Tenant())->find();
         $pager = new Pager(url("/admin/locatarios/"));
         $pager->pager($tenants->count(), 20, (!empty($data["page"]) ? $data["page"] : 1));
-
 
         echo $this->view->render("tenants", [
             "app" => "tenants",
@@ -199,7 +197,6 @@ class Admin extends Controller
         $proprietaries = (new Proprietary())->find();
         $pager = new Pager(url("/admin/locatarios/"));
         $pager->pager($proprietaries->count(), 20, (!empty($data["page"]) ? $data["page"] : 1));
-
 
         echo $this->view->render("proprietaries", [
             "app" => "proprietaries",
@@ -454,6 +451,7 @@ class Admin extends Controller
 
             $invoice->status = ($invoice->status == 'paid' ? 'unpaid' : 'paid');
             $invoice->save();
+
             $json['onpaid'] = true;
             echo json_encode($json);
         }
