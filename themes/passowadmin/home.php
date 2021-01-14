@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <div class="not_found_content">
                         <h2>Insera seus Locadores</h2>
-                        <p>Você pode inserir seus locadores de forma simples e rápida</p>
+                        <p>Clique no botão abaixo e insira seus locadores</p>
                         <a href="<?= url("/admin/locadores") ?>" class="store-item btn btn-success" type="button" role="button">
                             Cadastrar Locador
                         </a>

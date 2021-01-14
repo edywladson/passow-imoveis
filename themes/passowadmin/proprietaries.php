@@ -2,7 +2,7 @@
 
 <div class="mini_content">
     <div class="title_content d-flex align-items-center">
-        <h2 class="mr-auto p-2">Locatários</h2>
+        <h2 class="mr-auto p-2">Locadores</h2>
 
         <div class="add_product nav-item">
             <button class="btn btn-success" type="button" role="button" data-toggle="modal" data-target="#modalLocador">
