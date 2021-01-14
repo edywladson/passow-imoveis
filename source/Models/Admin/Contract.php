@@ -11,7 +11,7 @@ class Contract extends Model
     public function __construct()
     {
         parent::__construct(
-            "contracts",
+            "admin_contracts",
             ["id"],
             [
                 "proprietary_id",

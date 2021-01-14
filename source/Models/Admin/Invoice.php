@@ -19,7 +19,7 @@ class Invoice extends Model
     public function __construct()
     {
         parent::__construct(
-            'invoices',
+            'admin_invoices',
             ['id'],
             ['contract_id', 'tenant_id', 'value', 'due_at', 'repeat_when']
         );
@@ -46,15 +46,15 @@ class Invoice extends Model
         $rent_value = str_replace(['.', ','], ['', '.'], $data["rent_value"]);
         $condo_value = str_replace(['.', ','], ['', '.'], $data["condo_value"]);
         $iptu_value = str_replace(['.', ','], ['', '.'], $data["iptu_value"]);
-        $value = $rent_value + $condo_value + $iptu_value;
+        $value = abs($rent_value + $condo_value + $iptu_value);
 
         $this->contract_id = $contract->id;
         $this->tenant_id = $data["tenant_id"];
         $this->invoice_of = null;
-        $this->value = (($value / $lastDayMonthStart) * date_diff_interval($data["started"],date('Y-m-d', strtotime($dueAt . "+1month")),'D'));
+        $this->value = (($value / $lastDayMonthStart) * date_diff_interval($data["started"], date('Y-m-d', strtotime($dueAt . "+1month")), 'D'));
         $this->due_at = date('Y-m-d', strtotime($dueAt . "+1month"));
         $this->repeat_when = "enrollment";
-        $this->enrollments = date_diff_interval($data["started"],$data["closing"],'M');
+        $this->enrollments = date_diff_interval($data["started"], $data["closing"], 'M');
         $this->enrollment_of = 1;
         $this->status = 'unpaid';
 
@@ -68,7 +68,7 @@ class Invoice extends Model
                 $this->id = null;
                 $this->invoice_of = $invoiceOf;
                 $this->value = $value;
-                $this->due_at = date('Y-m-d', strtotime($dueAt . "+".($enrollment+1)."month"));
+                $this->due_at = date('Y-m-d', strtotime($dueAt . "+" . ($enrollment + 1) . "month"));
                 $this->status = 'unpaid';
                 $this->enrollment_of = $enrollment + 1;
                 $this->save();

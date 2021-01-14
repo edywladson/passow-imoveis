@@ -80,21 +80,8 @@ define("CONF_IMAGE_SIZE", 2000);
 define("CONF_IMAGE_QUALITY", ["jpg" => 75, "png" => 5]);
 
 /**
- * MAIL
+ * VISTA API
  */
-define("CONF_MAIL_HOST", "smtp.sendgrid.net");
-define("CONF_MAIL_PORT", "587");
-define("CONF_MAIL_USER", "apikey");
-define("CONF_MAIL_PASS", "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");
-define("CONF_MAIL_SENDER", ["name" => "Passow Imóveis", "address" => "edywladson@gmail.com"]);
-define("CONF_MAIL_SUPPORT", "edywladson@gmail.com");
-define("CONF_MAIL_OPTION_LANG", "br");
-define("CONF_MAIL_OPTION_HTML", true);
-define("CONF_MAIL_OPTION_AUTH", true);
-define("CONF_MAIL_OPTION_SECURE", "tls");
-define("CONF_MAIL_OPTION_CHARSET", "utf-8");
-
-//VISTA API
 define("CONF_VISTA_API_URL", "http://sandbox-rest.vistahost.com.br");
 define("CONF_VISTA_API_KEY", "c9fdd79584fb8d369a6a579af1a8f681");
 define("CONF_VISTA_BACK", CONF_URL_BASE . "/vista/callback");

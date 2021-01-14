@@ -18,7 +18,7 @@ class Tenant extends Model
      */
     public function __construct()
     {
-        parent::__construct("tenants", ["id"], ["name", "email", "phone"]);
+        parent::__construct("admin_tenants", ["id"], ["name", "email", "phone"]);
     }
 
     /**
